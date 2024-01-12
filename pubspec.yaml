@@ -38,6 +38,8 @@ dependencies:
   google_fonts: ^4.0.3
   simple_circular_progress_bar: ^1.0.2
   get: ^4.5.6
+  cloud_firestore: ^4.4.4
+  image_picker: ^0.8.7
 
 dev_dependencies:
   flutter_test:

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
+import 'package:tiktok/authengtication/authentication_controller.dart';
 import 'package:tiktok/authengtication/login_screen.dart';
 import 'package:tiktok/widgets/input_text_widget.dart';
 
@@ -20,6 +21,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController emailTextEditingController= TextEditingController();
   TextEditingController passwordTextEditingController= TextEditingController();
   bool showProgressBar = false;
+
+  var authenticationController = AuthenticationController.instanceAuth;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +49,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 const SizedBox(height: 16,),
                 GestureDetector(
                   onTap: (){
-
+                authenticationController.chooseImageWithCamera();
                   },
                   child: const CircleAvatar(
                     radius: 80,
