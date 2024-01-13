@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'package:tiktok/authengtication/authentication_controller.dart';
 import 'package:tiktok/authengtication/login_screen.dart';
+import 'package:tiktok/global.dart';
 import 'package:tiktok/widgets/input_text_widget.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController userNameTextEditingController= TextEditingController();
   TextEditingController emailTextEditingController= TextEditingController();
   TextEditingController passwordTextEditingController= TextEditingController();
-  bool showProgressBar = false;
+
 
   var authenticationController = AuthenticationController.instanceAuth;
   @override
@@ -49,7 +50,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 const SizedBox(height: 16,),
                 GestureDetector(
                   onTap: (){
-                authenticationController.chooseImageWithCamera();
+                authenticationController.chooseImageFromGallery();
                   },
                   child: const CircleAvatar(
                     radius: 80,
@@ -95,9 +96,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                       child: InkWell(
                         onTap: () {
-                          setState(() {
-                            showProgressBar = true;
-                          });
+                          if(authenticationController.profileImage != null
+                          && userNameTextEditingController.text.isNotEmpty
+                          && emailTextEditingController.text.isNotEmpty
+                          && passwordTextEditingController.text.isNotEmpty)
+                         {
+                           setState(() {
+                             showProgressBar = true;
+                           });
+                           authenticationController.createAccountForNewUser(
+                               authenticationController.profileImage!,
+                           userNameTextEditingController.text,
+                           emailTextEditingController.text,
+                           passwordTextEditingController.text
+                           );
+                         }
                         },
                         child: const Center(
                           child: Text(
