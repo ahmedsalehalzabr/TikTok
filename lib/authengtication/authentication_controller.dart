@@ -7,11 +7,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tiktok/authengtication/login_screen.dart';
 import 'package:tiktok/authengtication/registration_screen.dart';
 import 'package:tiktok/global.dart';
+import 'package:tiktok/home/home.dart';
 import 'user.dart' as userModel;
 
 class AuthenticationController extends GetxController {
   static AuthenticationController instanceAuth = Get.find();
-
+ late Rx<User?> _currentUser;
   late Rx<File?> _pickedFile;
 
   File? get profileImage => _pickedFile.value;
@@ -63,7 +64,7 @@ class AuthenticationController extends GetxController {
       Get.snackbar("Account Created",
           "Congratulation, your account has been created");
       showProgressBar = false;
-      Get.to(LoginScreen());
+
     } catch (error) {
       Get.snackbar("Account Creation Unsuccessful",
           "Error occurred while creating account, Try Again");
@@ -95,7 +96,7 @@ class AuthenticationController extends GetxController {
           Get.snackbar("Logged-in Successful",
               "Congratulation, you are Logged-in Successful");
           showProgressBar = false;
-          Get.to(RegistrationScreen());
+
         }
         catch(error)
     {
@@ -104,5 +105,25 @@ class AuthenticationController extends GetxController {
       showProgressBar = false;
       Get.to(RegistrationScreen());
     }
+  }
+
+  goToScreen(User? currentUser)
+  {
+    if(currentUser == null)
+      {
+        Get.offAll(LoginScreen());
+      }
+    else
+      {
+        Get.offAll(HomeScreen());
+      }
+  }
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+    _currentUser = Rx<User?>(FirebaseAuth.instance.currentUser);
+    _currentUser.bindStream(FirebaseAuth.instance.authStateChanges());
+    ever(_currentUser, goToScreen);
   }
 }
